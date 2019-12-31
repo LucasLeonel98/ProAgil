@@ -20,6 +20,7 @@ export class EventosComponent implements OnInit {
     this.eventos = this.http.get('http://localhost:5000/api/WeatherForecast/').subscribe(response => {
       this.eventos = response;
       console.log(response);
+    // tslint:disable-next-line: no-shadowed-variable
     }, error => {
       console.log(error);
     }
