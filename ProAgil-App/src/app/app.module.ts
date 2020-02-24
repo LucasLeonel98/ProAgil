@@ -8,6 +8,9 @@ import { AppComponent } from './app.component';
 import { EventosComponent } from './eventos/eventos.component';
 import { NavComponent } from './nav/nav.component';
 
+import { BsDropdownModule, TooltipModule, ModalModule } from 'ngx-bootstrap';
+import { EventoService } from './_services/evento.service';
+
 @NgModule({
    declarations: [
       AppComponent,
@@ -16,11 +19,16 @@ import { NavComponent } from './nav/nav.component';
    ],
    imports: [
       BrowserModule,
+      BsDropdownModule.forRoot(),
+      TooltipModule.forRoot(),
+      ModalModule.forRoot(),
       AppRoutingModule,
       HttpClientModule,
       FormsModule
    ],
-   providers: [],
+   providers: [
+      EventoService
+   ],
    bootstrap: [
       AppComponent
    ]

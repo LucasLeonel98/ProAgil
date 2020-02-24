@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { error } from 'util';
+import { EventoService } from '../_services/evento.service';
+import { Evento } from '../_models/Evento';
+
 
 @Component({
   selector: 'app-eventos',
@@ -10,40 +12,42 @@ import { error } from 'util';
 export class EventosComponent implements OnInit {
 
   _filtroLista: string;
-  get filtroLista(): string{
+  get filtroLista(): string {
     return this._filtroLista;
   }
-  set filtroLista(value: string){
+  set filtroLista(value: string) {
     this._filtroLista = value;
     this.eventosFiltrados = this.filtroLista ? this.filtrarEventos(this.filtroLista) : this.eventos;
   }
 
-  eventosFiltrados: any = [];
-  eventos: any = [];
-  imagemLargura = 50;
+  eventosFiltrados: Evento[];
+  eventos: Evento[];
+  imagemLargura = 100;
   imagemMargem = 2;
-  mostrarimagem = false;
+  mostrarImagem = false;
 
-  constructor(private http: HttpClient) { }
+  constructor(private eventoService: EventoService ) { }
 
   ngOnInit() {
     this.getEventos();
   }
 
-  filtrarEventos(filtrarPor: string) {
+  filtrarEventos(filtrarPor: string): Evento[] {
     filtrarPor = filtrarPor.toLocaleLowerCase();
     return this.eventos.filter(
       evento => evento.tema.toLocaleLowerCase().indexOf(filtrarPor) !== -1
     );
   }
   alternarimagem() {
-    this.mostrarimagem = !this.mostrarimagem;
+    this.mostrarImagem = !this.mostrarImagem;
   }
 
   getEventos() {
-    this.eventos = this.http.get('http://localhost:5000/api/WeatherForecast/').subscribe(response => {
-      this.eventos = response;
-      console.log(response);
+      this.eventoService.getAllEvento().subscribe(
+      (_eventos: Evento[]) => {
+      this.eventos = _eventos;
+      this.eventosFiltrados = this.eventos;
+      console.log(_eventos);
     // tslint:disable-next-line: no-shadowed-variable
     }, error => {
       console.log(error);
